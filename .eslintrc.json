@@ -36,6 +36,7 @@
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "camelcase": "off",
+    "import/no-duplicates": "off",
     "react/jsx-one-expression-per-line": "off",
     "react/jsx-filename-extension": [
       1,
