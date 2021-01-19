@@ -18,6 +18,7 @@ interface AuthContextData {
   loading: boolean;
   signIn(credencials: SignInCredentials): Promise<void>;
   signOut(): void;
+  updateUser(user: User): Promise<void>;
 }
 
 interface User {
@@ -57,6 +58,18 @@ export const AuthProvider: React.FC = ({ children }) => {
     loadStoredData();
   }, []);
 
+  const updateUser = useCallback(
+    async (user: User) => {
+      await AsyncStorage.setItem('@Barber:user', JSON.stringify(user));
+
+      setData({
+        token: data.token,
+        user,
+      });
+    },
+    [setData, data.token],
+  );
+
   const signIn = useCallback(async ({ email, password }) => {
     const response = await api.post('sessions', {
       email,
@@ -82,7 +95,9 @@ export const AuthProvider: React.FC = ({ children }) => {
   }, []);
 
   return (
-    <Auth.Provider value={{ user: data.user, loading, signIn, signOut }}>
+    <Auth.Provider
+      value={{ user: data.user, loading, signIn, signOut, updateUser }}
+    >
       {children}
     </Auth.Provider>
   );
